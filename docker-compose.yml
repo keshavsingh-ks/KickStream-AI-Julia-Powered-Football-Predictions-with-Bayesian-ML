@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  models:
+    build:
+      context: model-server/
+    ports:
+      - "7979:7979"
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://models:7979/"]
+  dashboard:
+    build:
+      context: dashboard/
+    depends_on:
+      models:
+        condition: service_healthy
+    ports:
+      - "9000:9000"
